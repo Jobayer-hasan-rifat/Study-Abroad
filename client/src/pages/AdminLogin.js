@@ -110,7 +110,7 @@ const AdminLogin = () => {
             Admin Access
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to manage the Global Education Platform
+            Sign in to manage the ApplyNext Platform
           </p>
         </div>
 
