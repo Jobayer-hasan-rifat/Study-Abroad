@@ -175,7 +175,7 @@ const adminUser = {
 const seedDatabase = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/global_education');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/applynext');
     console.log('✅ Connected to MongoDB');
 
     // Clear existing data

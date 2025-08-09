@@ -14,8 +14,8 @@ const verifyAdmin = async (req, res, next) => {
         }
 
         try {
-            // Verify token using admin secret
-            const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+            // Verify token using admin secret with fallback
+            const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET || 'your-admin-secret-key');
             
             if (decoded.role !== 'admin') {
                 return res.status(403).json({
