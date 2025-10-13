@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
   }],
+  bookmarkedScholarships: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Scholarship'
+  }],
   profileImage: {
     type: String,
     default: ''

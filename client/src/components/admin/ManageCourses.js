@@ -10,13 +10,19 @@ import {
   ExternalLink
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import AddCourseForm from './AddCourseForm';
+import EditCourseForm from './EditCourseForm';
+import ConfirmModal from '../common/ConfirmModal';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
     fetchCourses();
@@ -40,19 +46,35 @@ const ManageCourses = () => {
     setSelectedCourse(course);
     setShowEditModal(true);
   };
+  
+  const handleAddCourse = () => {
+    setShowAddForm(true);
+  };
 
-  const handleDeleteCourse = async (courseId) => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
-      try {
-        const res = await axios.delete(`/api/admin/courses/${courseId}`);
-        if (res.data.success) {
-          setCourses(courses.filter(course => course._id !== courseId));
-          toast.success('Course deleted successfully');
-        }
-      } catch (error) {
-        console.error('Error deleting course:', error);
-        toast.error('Failed to delete course');
+  const handleFormClose = () => {
+    setShowAddForm(false);
+    fetchCourses(); // Refresh the list after adding
+  };
+
+  const requestDeleteCourse = (courseId) => {
+    setPendingDeleteId(courseId);
+    setConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    const courseId = pendingDeleteId;
+    try {
+      const res = await axios.delete(`/api/admin/courses/${courseId}`);
+      if (res.data.success) {
+        setCourses(courses.filter(course => course._id !== courseId));
+        toast.success('Course deleted successfully');
       }
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      toast.error('Failed to delete course');
+    } finally {
+      setConfirmOpen(false);
+      setPendingDeleteId(null);
     }
   };
 
@@ -67,6 +89,10 @@ const ManageCourses = () => {
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     );
+  }
+  
+  if (showAddForm) {
+    return <AddCourseForm onClose={handleFormClose} />;
   }
 
   return (
@@ -83,7 +109,9 @@ const ManageCourses = () => {
           />
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
         </div>
-        <button className="flex items-center px-4 py-2 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700">
+        <button 
+          onClick={handleAddCourse}
+          className="flex items-center px-4 py-2 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700">
           <Plus className="h-5 w-5 mr-2" />
           Add New Course
         </button>
@@ -127,7 +155,7 @@ const ManageCourses = () => {
                     <Edit2 className="h-5 w-5" />
                   </button>
                   <button
-                    onClick={() => handleDeleteCourse(course._id)}
+                    onClick={() => requestDeleteCourse(course._id)}
                     className="p-2 text-red-600 hover:bg-red-50 rounded-full"
                   >
                     <Trash2 className="h-5 w-5" />
@@ -156,6 +184,25 @@ const ManageCourses = () => {
           </p>
         </div>
       )}
+      {showEditModal && selectedCourse && (
+        <EditCourseForm
+          course={selectedCourse}
+          onClose={() => setShowEditModal(false)}
+          onSaved={(updated) => {
+            setCourses(prev => prev.map(c => c._id === updated._id ? updated : c));
+          }}
+        />
+      )}
+
+      <ConfirmModal
+        open={confirmOpen}
+        title="Delete Course"
+        message="Are you sure you want to delete this course? This action cannot be undone."
+        confirmText="Delete"
+        confirmVariant="danger"
+        onConfirm={confirmDelete}
+        onCancel={() => { setConfirmOpen(false); setPendingDeleteId(null); }}
+      />
     </div>
   );
 };

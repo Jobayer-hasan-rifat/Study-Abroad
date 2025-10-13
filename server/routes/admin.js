@@ -6,7 +6,15 @@ const {
   updateUser,
   deleteUser,
   getCourses,
-  deleteCourse
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  getScholarships,
+  createScholarship,
+  updateScholarship,
+  deleteScholarship,
+  getApplications,
+  updateApplication
 } = require('../controllers/adminController');
 
 const router = express.Router();
@@ -24,6 +32,18 @@ router.delete('/users/:id', deleteUser);
 
 // Course management routes
 router.get('/courses', getCourses);
+router.post('/courses', createCourse);
+router.put('/courses/:id', updateCourse);
 router.delete('/courses/:id', deleteCourse);
 
-module.exports = router; 
+// Scholarship management routes
+router.get('/scholarships', getScholarships);
+router.post('/scholarships', createScholarship);
+router.put('/scholarships/:id', updateScholarship);
+router.delete('/scholarships/:id', deleteScholarship);
+
+// Application management routes
+router.get('/applications', getApplications);
+router.put('/applications/:id', updateApplication);
+
+module.exports = router;

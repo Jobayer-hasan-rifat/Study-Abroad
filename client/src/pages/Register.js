@@ -99,7 +99,7 @@ const Register = () => {
             Create Account
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Join thousands of students discovering ApplyNext opportunities
+            Join thousands of students discovering EduNex opportunities
           </p>
         </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import { useAuth } from '../context/AuthContext';
 import { 
   MapPin, 
@@ -19,10 +20,13 @@ import toast from 'react-hot-toast';
 
 const CourseDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { isAuthenticated } = useAuth();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
 
   useEffect(() => {
     fetchCourseDetails();
@@ -36,6 +40,14 @@ const CourseDetail = () => {
       if (isAuthenticated) {
         const bookmarkResponse = await axios.get(`/api/user/bookmark-status/${id}`);
         setIsBookmarked(bookmarkResponse.data.data.bookmarked);
+
+        // Check if user already applied for this course (non-draft)
+        try {
+          const apps = await axios.get('/api/user/applications');
+          const list = apps.data?.data?.applications || [];
+          const applied = list.some(a => a.type === 'course' && a.course?._id === id);
+          setHasApplied(applied);
+        } catch {}
       }
     } catch (error) {
       console.error('Error fetching course details:', error);
@@ -191,6 +203,12 @@ const CourseDetail = () => {
                     {course.currency} {course.tuitionFee?.toLocaleString()}
                   </p>
                 </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Application Fee</h3>
+                  <p className="text-gray-600">
+                    {course.currency} {course.applicationFee?.toLocaleString()}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -251,10 +269,18 @@ const CourseDetail = () => {
                     <span className="text-gray-600">Location:</span>
                     <span className="font-medium">{course.city}, {course.country}</span>
                   </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Application Fee:</span>
+                    <span className="font-medium">{course.currency} {course.applicationFee?.toLocaleString()}</span>
+                  </div>
                 </div>
 
-                <button className="btn-primary w-full">
-                  Apply for this Course
+                <button
+                  className={`btn-primary w-full ${hasApplied ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  onClick={() => navigate(`/apply/${id}`)}
+                  disabled={hasApplied}
+                >
+                  {hasApplied ? 'Already Applied' : 'Apply for this Course'}
                 </button>
                 
                 <button

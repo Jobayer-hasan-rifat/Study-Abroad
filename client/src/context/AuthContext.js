@@ -140,14 +140,6 @@ export const AuthProvider = ({ children }) => {
   // Admin login
   const adminLogin = async (formData) => {
     try {
-      // Clear any existing tokens first - don't wait for response
-      try {
-        await axios.post('/api/auth/logout');
-        dispatch({ type: 'LOGOUT' });
-      } catch (error) {
-        console.log('Error clearing session (continuing anyway):', error);
-      }
-      
       // Attempt admin login with hardcoded credentials
       const res = await axios.post('/api/auth/admin-login', {
         email: 'admin@admin.com',

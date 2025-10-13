@@ -1,7 +1,7 @@
 {
-  "name": "applynext-server",
+  "name": "edunex-server",
   "version": "1.0.0",
-  "description": "Backend server for ApplyNext Platform",
+  "description": "Backend server for EduNex Platform",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -20,7 +20,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
     "nodemailer": "^6.9.7",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "stripe": "^14.11.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

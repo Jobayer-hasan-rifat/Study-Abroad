@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, User, BookOpen, LogOut, GraduationCap } from 'lucide-react';
+import { Menu, X, User, BookOpen, LogOut, GraduationCap, Bookmark, Shield } from 'lucide-react';
 
 const Navbar = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
@@ -25,7 +25,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <GraduationCap className="h-8 w-8 text-primary-600" />
-            <span className="text-xl font-bold text-gradient">ApplyNext</span>
+            <span className="text-xl font-bold text-gradient">EduNex</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -62,12 +62,30 @@ const Navbar = () => {
                   </span>
                 </div>
                 {isAuthenticated && (
+                  <>
+                    <Link
+                      to="/bookmarks"
+                      className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                    >
+                      <Bookmark className="h-5 w-5" />
+                      <span>Bookmarks</span>
+                    </Link>
+                    <Link
+                      to="/profile"
+                      className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                    >
+                      <BookOpen className="h-5 w-5" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </>
+                )}
+                {isAdmin && (
                   <Link
-                    to="/profile"
+                    to="/admin/dashboard"
                     className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
                   >
-                    <BookOpen className="h-5 w-5" />
-                    <span>Dashboard</span>
+                    <Shield className="h-5 w-5" />
+                    <span>Admin Dashboard</span>
                   </Link>
                 )}
                 <button
@@ -135,12 +153,39 @@ const Navbar = () => {
                     Welcome, {user?.name || 'User'}
                   </div>
                   {isAuthenticated && (
+                    <>
+                      <Link
+                        to="/bookmarks"
+                        className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className="flex items-center">
+                          <Bookmark className="h-5 w-5 mr-2" />
+                          Bookmarks
+                        </div>
+                      </Link>
+                      <Link
+                        to="/profile"
+                        className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className="flex items-center">
+                          <BookOpen className="h-5 w-5 mr-2" />
+                          Dashboard
+                        </div>
+                      </Link>
+                    </>
+                  )}
+                  {isAdmin && (
                     <Link
-                      to="/profile"
+                      to="/admin/dashboard"
                       className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Dashboard
+                      <div className="flex items-center">
+                        <Shield className="h-5 w-5 mr-2" />
+                        Admin Dashboard
+                      </div>
                     </Link>
                   )}
                   <button
@@ -162,4 +207,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

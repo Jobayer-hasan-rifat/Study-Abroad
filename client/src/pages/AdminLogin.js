@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, Mail, Lock, Shield, GraduationCap } from 'lucide-react';
-import axios from 'axios';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -13,24 +12,8 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const { adminLogin, dispatch } = useAuth();
+  const { adminLogin } = useAuth();
   const navigate = useNavigate();
-
-  // Clear any existing tokens when the admin login page loads
-  useEffect(() => {
-    const clearExistingSession = async () => {
-      try {
-        // Call logout endpoint to clear cookies
-        await axios.post('/api/auth/logout');
-        // Clear local auth state
-        dispatch({ type: 'LOGOUT' });
-      } catch (error) {
-        console.error('Error clearing session:', error);
-      }
-    };
-    
-    clearExistingSession();
-  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
@@ -110,7 +93,7 @@ const AdminLogin = () => {
             Admin Access
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to manage the ApplyNext Platform
+            Sign in to manage the EduNex Platform
           </p>
         </div>
 
