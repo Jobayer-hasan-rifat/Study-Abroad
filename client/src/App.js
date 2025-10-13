@@ -6,6 +6,7 @@ import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
+import Chatbot from './components/Chatbot';
 
 // Pages
 import Home from './pages/Home';
@@ -19,6 +20,12 @@ import CourseDetail from './pages/CourseDetail';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import UserProfile from './pages/UserProfile';
+import ApplicationForm from './pages/ApplicationForm';
+import ApplicationFormWithPayment from './components/ApplicationFormWithPayment';
+import ScholarshipDetail from './pages/ScholarshipDetail';
+import ScholarshipApplicationForm from './pages/ScholarshipApplicationForm';
+import BookmarksPage from './pages/BookmarksPage';
+import ProfileDashboard from './pages/ProfileDashboard';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -62,6 +69,7 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<CourseDetail />} />
+          <Route path="/scholarships/:id" element={<ScholarshipDetail />} />
           
           {/* Protected User Routes */}
           <Route 
@@ -72,7 +80,39 @@ function App() {
             path="/profile" 
             element={
               <ProtectedRoute>
-                <UserProfile />
+                <ProfileDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/apply/:id" 
+            element={
+              <ProtectedRoute>
+                <ApplicationFormWithPayment />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/apply/scholarship/:id" 
+            element={
+              <ProtectedRoute>
+                <ApplicationFormWithPayment />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/apply-scholarship/:scholarshipId" 
+            element={
+              <ProtectedRoute>
+                <ScholarshipApplicationForm />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/bookmarks" 
+            element={
+              <ProtectedRoute>
+                <BookmarksPage />
               </ProtectedRoute>
             } 
           />
@@ -92,8 +132,9 @@ function App() {
         </Routes>
       </main>
       {shouldShowFooter && <Footer />}
+      <Chatbot />
     </div>
   );
 }
 
-export default App; 
+export default App;

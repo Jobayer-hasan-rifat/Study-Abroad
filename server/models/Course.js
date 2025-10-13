@@ -12,6 +12,11 @@ const courseSchema = new mongoose.Schema({
     required: [true, 'Course description is required'],
     maxlength: [1000, 'Description cannot exceed 1000 characters']
   },
+  shortDescription: {
+    type: String,
+    required: [true, 'Short description is required'],
+    maxlength: [200, 'Short description cannot exceed 200 characters']
+  },
   university: {
     type: String,
     required: [true, 'University name is required'],
@@ -45,6 +50,11 @@ const courseSchema = new mongoose.Schema({
   tuitionFee: {
     type: Number,
     required: [true, 'Tuition fee is required']
+  },
+  applicationFee: {
+    type: Number,
+    required: [true, 'Application fee is required'],
+    min: [0, 'Application fee cannot be negative']
   },
   currency: {
     type: String,
@@ -105,4 +115,4 @@ courseSchema.index({
   field: 'text' 
 });
 
-module.exports = mongoose.model('Course', courseSchema); 
+module.exports = mongoose.model('Course', courseSchema);

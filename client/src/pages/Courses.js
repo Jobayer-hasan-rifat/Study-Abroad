@@ -14,90 +14,6 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// Demo courses for testing without seeding the backend
-const demoCourses = [
-  {
-    _id: 'demo-1',
-    title: 'Master of Computer Science',
-    description: 'Advanced program in computer science with focus on AI and ML.',
-    university: 'University of Toronto',
-    country: 'Canada',
-    city: 'Toronto',
-    level: 'Graduate',
-    field: 'Computer Science',
-    duration: '2 years',
-    tuitionFee: 45000,
-    currency: 'CAD',
-    image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=1200&q=60',
-    featured: true,
-    rating: 4.8
-  },
-  {
-    _id: 'demo-2',
-    title: 'Bachelor of Business Administration',
-    description: 'Comprehensive business program covering management and finance.',
-    university: 'University of Melbourne',
-    country: 'Australia',
-    city: 'Melbourne',
-    level: 'Undergraduate',
-    field: 'Business Administration',
-    duration: '3 years',
-    tuitionFee: 38000,
-    currency: 'AUD',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=60',
-    featured: true,
-    rating: 4.6
-  },
-  {
-    _id: 'demo-3',
-    title: 'PhD in Engineering',
-    description: 'Research-intensive doctoral program in renewable energy.',
-    university: 'Imperial College London',
-    country: 'United Kingdom',
-    city: 'London',
-    level: 'PhD',
-    field: 'Engineering',
-    duration: '4 years',
-    tuitionFee: 28000,
-    currency: 'GBP',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=60',
-    featured: true,
-    rating: 4.9
-  },
-  {
-    _id: 'demo-4',
-    title: 'Master of Arts in International Relations',
-    description: 'Advanced study of global politics and diplomacy.',
-    university: 'Sciences Po Paris',
-    country: 'France',
-    city: 'Paris',
-    level: 'Graduate',
-    field: 'International Relations',
-    duration: '2 years',
-    tuitionFee: 15000,
-    currency: 'EUR',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9a1?auto=format&fit=crop&w=1200&q=60',
-    featured: false,
-    rating: 4.7
-  },
-  {
-    _id: 'demo-5',
-    title: 'Bachelor of Medicine and Surgery',
-    description: 'Comprehensive medical program with clinical rotations.',
-    university: 'University of Edinburgh',
-    country: 'United Kingdom',
-    city: 'Edinburgh',
-    level: 'Undergraduate',
-    field: 'Medicine',
-    duration: '6 years',
-    tuitionFee: 35000,
-    currency: 'GBP',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=1200&q=60',
-    featured: true,
-    rating: 4.8
-  }
-];
-
 const Courses = () => {
   const { isAuthenticated } = useAuth();
   const [courses, setCourses] = useState([]);
@@ -120,7 +36,7 @@ const Courses = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [useDemo, setUseDemo] = useState(false);
+  const [scholarships, setScholarships] = useState([]);
 
   useEffect(() => {
     fetchCourses();
@@ -130,61 +46,13 @@ const Courses = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, page]);
 
-  // Refetch when switching between demo and API
   useEffect(() => {
-    setLoading(true);
-    fetchCourses();
+    fetchScholarships();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useDemo]);
+  }, []);
 
   const fetchCourses = async () => {
     try {
-      if (useDemo) {
-        // Filter and sort demo courses locally
-        let results = [...demoCourses];
-        const { country, city, level, field, currency, duration, featured, minFee, maxFee, minRating } = filters;
-
-        if (searchTerm) {
-          const q = searchTerm.toLowerCase();
-          results = results.filter(c =>
-            c.title.toLowerCase().includes(q) ||
-            c.description.toLowerCase().includes(q) ||
-            c.university.toLowerCase().includes(q) ||
-            c.field.toLowerCase().includes(q)
-          );
-        }
-        if (country) results = results.filter(c => new RegExp(country, 'i').test(c.country));
-        if (city) results = results.filter(c => new RegExp(city, 'i').test(c.city));
-        if (level) results = results.filter(c => c.level === level);
-        if (field) results = results.filter(c => new RegExp(field, 'i').test(c.field));
-        if (currency) results = results.filter(c => c.currency === currency);
-        if (duration) results = results.filter(c => new RegExp(duration, 'i').test(c.duration));
-        if (featured) results = results.filter(c => c.featured === true);
-        if (minFee) results = results.filter(c => c.tuitionFee >= Number(minFee));
-        if (maxFee) results = results.filter(c => c.tuitionFee <= Number(maxFee));
-        if (minRating) results = results.filter(c => c.rating >= Number(minRating));
-
-        const sorters = {
-          newest: (a, b) => 0,
-          oldest: (a, b) => 0,
-          price_asc: (a, b) => a.tuitionFee - b.tuitionFee,
-          price_desc: (a, b) => b.tuitionFee - a.tuitionFee,
-          rating_desc: (a, b) => b.rating - a.rating,
-          rating_asc: (a, b) => a.rating - b.rating,
-          title_asc: (a, b) => a.title.localeCompare(b.title),
-          title_desc: (a, b) => b.title.localeCompare(a.title)
-        };
-        results.sort(sorters[sort] || (() => 0));
-
-        const pageSize = 9;
-        const total = results.length;
-        setTotalPages(Math.max(1, Math.ceil(total / pageSize)));
-        const start = (page - 1) * pageSize;
-        const end = start + pageSize;
-        setCourses(results.slice(start, end));
-        return;
-      }
-
       const params = new URLSearchParams();
       if (searchTerm) params.append('search', searchTerm);
       if (filters.country) params.append('country', filters.country);
@@ -209,6 +77,18 @@ const Courses = () => {
       toast.error('Failed to load courses');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchScholarships = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (searchTerm) params.append('search', searchTerm);
+      if (filters.country) params.append('country', filters.country);
+      const response = await axios.get(`/api/scholarships?${params.toString()}`);
+      setScholarships(response.data.data.scholarships || []);
+    } catch (error) {
+      console.error('Error fetching scholarships:', error);
     }
   };
 
@@ -350,12 +230,7 @@ const Courses = () => {
                   <Filter className="h-4 w-4 mr-1" /> {showAdvanced ? 'Hide Advanced' : 'Advanced Filters'}
                 </button>
               </div>
-              <div className="flex items-center space-x-2 text-sm">
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" checked={useDemo} onChange={(e) => setUseDemo(e.target.checked)} />
-                  <span>Use demo data</span>
-                </label>
-              </div>
+              <div className="flex items-center space-x-2 text-sm" />
             </div>
 
             {/* Advanced panel */}
@@ -631,6 +506,48 @@ const Courses = () => {
             ))}
           </div>
         )}
+
+        {/* Scholarships Section */}
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Scholarships</h2>
+            <span className="text-sm text-gray-600">{scholarships.length} found</span>
+          </div>
+          {scholarships.length === 0 ? (
+            <div className="text-center py-10 text-gray-600">No scholarships available</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {scholarships.map((s) => (
+                <div key={s._id} className="card overflow-hidden group">
+                  <div className="relative h-48 overflow-hidden">
+                    <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    {s.applicationDeadline && (
+                      <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        Deadline: {new Date(s.applicationDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{s.title}</h3>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{s.shortDescription}</p>
+                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                      <div className="flex items-center">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        {s.university} • {s.country}
+                      </div>
+                      {typeof s.amount !== 'undefined' && (
+                        <div className="font-medium text-secondary-700">{s.currency || 'USD'} {s.amount?.toLocaleString?.() || s.amount}</div>
+                      )}
+                    </div>
+                    <div className="flex justify-end">
+                      <Link to={`/scholarships/${s._id}`} className="btn-primary text-sm">View Details</Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Pagination */}
         {totalPages > 1 && (

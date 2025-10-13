@@ -62,7 +62,7 @@ const Home = () => {
             <div className="space-y-8">
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
                 Your Gateway to
-                <span className="block text-yellow-300">ApplyNext</span>
+                <span className="block text-yellow-300">EduNex</span>
               </h1>
               <p className="text-xl lg:text-2xl text-gray-100 leading-relaxed">
                 Discover world-class universities, courses, and scholarships from around the globe. 
@@ -141,7 +141,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose ApplyNext?
+              Why Choose EduNex?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We provide comprehensive support to help you achieve your international education dreams

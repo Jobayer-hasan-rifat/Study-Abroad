@@ -1,4 +1,4 @@
-# 🌍 ApplyNext Platform
+# 🌍 EduNex Platform
 
 A full-stack MERN (MongoDB, Express.js, React, Node.js) application for discovering and managing global education opportunities. Built with modern web technologies and inspired by leading education platforms like IDP.
 
@@ -65,7 +65,7 @@ A full-stack MERN (MongoDB, Express.js, React, Node.js) application for discover
 ## 📁 Project Structure
 
 ```
-applynext-platform/
+edunex-platform/
 ├── client/                 # React frontend
 │   ├── public/
 │   ├── src/
@@ -99,7 +99,7 @@ applynext-platform/
 ### 1. Clone the Repository
 ```bash
 git clone <repository-url>
-cd applynext-platform
+cd edunex-platform
 ```
 
 ### 2. Install Dependencies

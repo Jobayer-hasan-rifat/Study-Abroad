@@ -1,7 +1,7 @@
 {
-  "name": "applynext-platform",
+  "name": "edunex-platform",
   "version": "1.0.0",
-  "description": "A full-stack MERN application for ApplyNext education opportunities",
+  "description": "A full-stack MERN application for EduNex education opportunities",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
@@ -12,7 +12,7 @@
     "build": "cd client && npm install && npm run build"
   },
   "keywords": ["mern", "education", "study-abroad", "mongodb", "react", "express"],
-  "author": "ApplyNext Platform",
+  "author": "EduNex Platform",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2",

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Users, BookOpen, BarChart3, Settings, Activity, Award, FileText, TrendingUp } from 'lucide-react';
+import { Users, BookOpen, BarChart3, Settings, Activity, Award, FileText, TrendingUp, CreditCard } from 'lucide-react';
 import axios from 'axios';
 import AdminLayout from '../components/layouts/AdminLayout';
 import ManageUsers from '../components/admin/ManageUsers';
+import ManageCourses from '../components/admin/ManageCourses';
+import ManageScholarships from '../components/admin/ManageScholarships';
+import ManageApplicants from '../components/admin/ManageApplicants';
+import PaymentHistory from '../components/admin/PaymentHistory';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -62,6 +66,12 @@ const AdminDashboard = () => {
       title: 'View Applications',
       icon: FileText,
       onClick: () => setActiveTab('applications')
+    },
+    {
+      id: 'payments',
+      title: 'Payment History',
+      icon: CreditCard,
+      onClick: () => setActiveTab('payments')
     },
     {
       id: 'settings',
@@ -179,11 +189,13 @@ const AdminDashboard = () => {
       case 'users':
         return React.createElement(ManageUsers);
       case 'courses':
-        return renderComingSoon('Course Management');
+        return React.createElement(ManageCourses);
       case 'scholarships':
-        return renderComingSoon('Scholarship Management');
+        return React.createElement(ManageScholarships);
       case 'applications':
-        return renderComingSoon('Application Management');
+        return React.createElement(ManageApplicants);
+      case 'payments':
+        return React.createElement(PaymentHistory);
       case 'settings':
         return renderComingSoon('Settings');
       default:

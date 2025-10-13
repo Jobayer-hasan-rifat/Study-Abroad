@@ -17,6 +17,7 @@ const sampleCourses = [
     field: "Computer Science",
     duration: "2 years",
     tuitionFee: 45000,
+    applicationFee: 150,
     currency: "CAD",
     image: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
     universityLogo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
@@ -48,6 +49,7 @@ const sampleCourses = [
     field: "Business Administration",
     duration: "3 years",
     tuitionFee: 38000,
+    applicationFee: 120,
     currency: "AUD",
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2011&q=80",
     universityLogo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
@@ -79,6 +81,7 @@ const sampleCourses = [
     field: "Engineering",
     duration: "4 years",
     tuitionFee: 28000,
+    applicationFee: 200,
     currency: "GBP",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
     universityLogo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
@@ -110,6 +113,7 @@ const sampleCourses = [
     field: "International Relations",
     duration: "2 years",
     tuitionFee: 15000,
+    applicationFee: 100,
     currency: "EUR",
     image: "https://images.unsplash.com/photo-1523050854058-8df90110c9a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2025&q=80",
     universityLogo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
@@ -141,6 +145,7 @@ const sampleCourses = [
     field: "Medicine",
     duration: "6 years",
     tuitionFee: 35000,
+    applicationFee: 180,
     currency: "GBP",
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
     universityLogo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
@@ -175,7 +180,7 @@ const adminUser = {
 const seedDatabase = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/applynext');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/edunex');
     console.log('✅ Connected to MongoDB');
 
     // Clear existing data
